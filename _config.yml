@@ -16,7 +16,7 @@ timezone: Asia/Seoul
 
 title: RootJihn Log # the main title
 
-tagline: 끝까지 가면 결국 풀린다# it will display as the subtitle
+tagline: 끝까지 가면 결국 풀린다
 
 description: >- # used by seo meta and the atom feed
   A minimal, responsive and feature-rich Jekyll theme for technical writing.
