@@ -119,7 +119,7 @@ comments:
     issue_term: # < url | pathname | title | ...>
   # Giscus options › https://giscus.app
   giscus:
-    repo: rootjihn/rootjhin.github.io
+    repo: rootjihn/rootjihn.github.io
     repo_id: 'R_kgDORa34vA'
     category: General
     category_id: 'DIC_kwDORa34vM4C3Ymf'
