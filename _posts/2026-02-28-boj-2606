@@ -1,0 +1,90 @@
+---
+title: "[Baekjoon] 2606번: 바이러스 - C++ 풀이"
+date: 2026-02-28 15:00:00 +0900
+categories: [Baekjoon, cpp]
+tags: [algorithm, graph, dfs]
+math: true
+---
+
+## 문제 링크
+https://www.acmicpc.net/problem/2606
+
+## 문제 설명
+컴퓨터의 수와 네트워크 상에서 서로 연결되어 있는 정보가 주어질 때, 1번 컴퓨터가 바이러스에 걸렸을 때 바이러스에 걸리게 되는 컴퓨터의 수를 출력한다. (1번 컴퓨터는 제외)
+
+---
+
+## 풀이 전략 (Approach)
+이 문제는 1번 컴퓨터에서 시작해서 연결된 모든 컴퓨터를 방문하는 **그래프 탐색(DFS/BFS)** 문제입니다.
+
+### 1. 상태 정의 및 알고리즘 도출
+`visited[i]`를 i번 컴퓨터를 이미 방문(감염 확인)했는지 여부라고 정의하면,
+
+- 1번 컴퓨터에서 DFS를 시작한다.
+- DFS로 1번과 연결된 모든 정점을 방문 처리하면, 방문되는 정점들이 곧 감염되는 컴퓨터들이다.
+- 문제에서 1번 컴퓨터는 제외하므로, 1번에서 출발해 새로 방문하게 되는 컴퓨터 수만 카운트하면 된다.
+
+---
+
+## 코드 (C++)
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int v, e;
+int ans;
+vector<vector<int>> adj;
+vector<int> visited;
+
+void dfs(int now)
+{
+    visited[now] = 1;
+
+    for(int next : adj[now])
+    {
+        if(visited[next]==1)
+            continue;
+        ans++;
+        dfs(next);
+    }
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    cin >> v >> e;
+    adj.assign(v+1, vector<int>());
+    visited.assign(v+1, 0);
+
+    for (int i = 0; i < e; i++)
+    {
+        int from, to;
+        cin >> from >> to;
+        adj[from].push_back(to);
+        adj[to].push_back(from);
+    }
+
+    dfs(1);
+
+    cout << ans;
+
+    return 0;
+}
+```
+
+---
+
+## 복잡도 분석
+### 1. 시간복잡도 : $$O(V + E)$$
+정점은 방문 체크로 최대 1번씩 DFS에 의해 방문되고(O(V)),
+간선은 인접 리스트를 순회하면서 최대 2번(무방향이므로 양쪽 리스트) 확인하므로 O(E)입니다.
+따라서 전체 시간복잡도는 $$O(V+E)$$ 입니다.
+
+### 2. 공간복잡도 : $$O(V + E)$$
+인접 리스트 `adj`에 간선 정보를 저장하는 데 $$O(V+E)$$ 공간이 필요하고,
+방문 배열 `visited`가 $$O(V)$$ 이므로 전체 공간복잡도는 $$O(V+E)$$ 입니다.
