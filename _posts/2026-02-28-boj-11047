@@ -1,0 +1,71 @@
+---
+title: "[Baekjoon] 11047번: 동전 0 - C++ 풀이"
+date: 2026-02-28 15:42:00 +0900
+categories: [Baekjoon, cpp]
+tags: [algorithm, greedy]
+math: true
+---
+
+## 문제 링크
+https://www.acmicpc.net/problem/11047
+
+## 문제 설명
+준규가 가지고 있는 동전은 총 N종류이고, 각각의 동전을 매우 많이 가지고 있다.
+동전을 적절히 사용해서 그 가치의 합을 K로 만들려고 한다. 이때 필요한 동전 개수의 최솟값을 출력한다.
+
+---
+
+## 풀이 전략 (Approach)
+이 문제는 큰 동전부터 최대한 사용하는 방식이 항상 최적이므로 **그리디(Greedy)** 로 해결하는 문제입니다.
+
+### 1. 상태 정의 및 알고리즘 도출
+- 동전 가치를 큰 값부터 차례로 보면서,
+  - 현재 K에서 해당 동전을 최대 몇 개 쓸 수 있는지 `K / coin[i]` 로 계산하여 개수에 더한다.
+  - 사용한 만큼 K를 `K % coin[i]` 로 줄인다.
+- 문제 조건(동전 가치가 특정 규칙을 만족) 때문에 큰 동전을 먼저 쓰는 선택이 최적해를 보장한다.
+
+---
+
+## 코드 (C++)
+```cpp
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, k;
+    cin >> n >> k;
+    int cnt = 0;
+
+    vector<int> coin(n, 0);
+
+    for (int i = n - 1; i >= 0; --i)
+    {
+        // 내림차순 정렬이 되도록 입력받기
+        cin >> coin[i];
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        cnt += k / coin[i];
+        k %= coin[i];
+    }
+
+    cout << cnt;
+}
+```
+
+---
+
+## 복잡도 분석
+### 1. 시간복잡도 : $$O(N)$$
+동전 종류 N개를 한 번 순회하며 나눗셈/나머지 연산을 수행합니다.
+따라서 시간복잡도는 $$O(N)$$ 입니다.
+
+### 2. 공간복잡도 : $$O(N)$$
+동전 가치들을 저장하는 배열(벡터) `coin`이 필요하므로 $$O(N)$$ 공간을 사용합니다.
